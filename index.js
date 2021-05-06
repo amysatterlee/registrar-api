@@ -1,30 +1,5 @@
-const { createUser, fetchUser, loginUser, updatePassword, deleteUser, getAvatarUrl } = require('./lib/users');
+const { createAccount, fetchAccount, loginAccount } = require('./lib/accounts');
 const { tokenValid } = require('./lib/tokens');
-
-// authorized single user endpoints to get, update, and delete
-const userEndpoint = async (event, context) => {
-    // users/{userId} path; GET, PUT, & DELETE
-    if (['GET', 'PUT', 'DELETE'].includes(event.httpMethod)) {
-        const token = tokenValid(event, context);
-        if (token.valid) {
-            switch(event.httpMethod) {
-                case 'GET':
-                    return await fetchUser(event, context);
-                    break;
-                case 'PUT':
-                    return await updatePassword(event, context);
-                    break;
-                case 'DELETE':
-                    return await deleteUser(event, context);
-                    break;
-            }
-        } else {
-            throw new Error('Not Authorized');
-        }
-    } else {
-        throw new Error('Page not found');
-    }
-};
 
 exports.handler = async (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
@@ -37,35 +12,38 @@ exports.handler = async (event, context) => {
 
     try {
         switch (event.resource) {
-            case '/users':
+            case '/accounts':
                 // users path; POST
                 switch (event.httpMethod) {
                     case 'POST':
-                        body = await createUser(event, context);
-                        break;
-                    case 'GET':
-                        console.log('inside get method');
+                        body = await createAccount(event, context);
                         break;
                     default:
                         throw new Error('Page not found');
                 }
                 break;
-            case '/users/{userId}':
-                body = await userEndpoint(event, context);
-                break;
-            case '/users/{userId}/avatar':
+            case '/accounts/{accountId}':
                 const token = tokenValid(event, context);
                 if (token.valid) {
-                    body = getAvatarUrl(event, context);
+                    switch(event.httpMethod) {
+                        case 'GET':
+                            body = await fetchAccount(event, context);
+                            break;
+                        // case 'PUT':
+                        //     body = await updateAccount(event, context);
+                        //     break;
+                        default:
+                            throw new Error('Page not found');
+                    }
                 } else {
                     throw new Error('Not Authorized');
                 }
                 break;
             case '/login':
-                // /login path; POST
+                // login path; POST
                 switch (event.httpMethod) {
                     case 'POST':
-                        body = await loginUser(event, context);
+                        body = await loginAccount(event, context);
                         break;
                     default:
                         throw new Error('Page not found');
