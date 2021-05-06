@@ -1,9 +1,10 @@
 const { createAccount, fetchAccount, loginAccount } = require('./lib/accounts');
+const { fetchEvent, createEvent, fetchEvents, updateEvent } = require('./lib/events');
 const { tokenValid } = require('./lib/tokens');
 
 exports.handler = async (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
-
+    let token;
     let body;
     let statusCode = '200';
     const headers = {
@@ -23,7 +24,7 @@ exports.handler = async (event, context) => {
                 }
                 break;
             case '/accounts/{accountId}':
-                const token = tokenValid(event, context);
+                token = tokenValid(event, context);
                 if (token.valid) {
                     switch(event.httpMethod) {
                         case 'GET':
@@ -37,6 +38,36 @@ exports.handler = async (event, context) => {
                     }
                 } else {
                     throw new Error('Not Authorized');
+                }
+                break;
+            case '/accounts/{accountId}/events':
+                token = tokenValid(event, context);
+                if (token.valid) {
+                    switch(event.httpMethod) {
+                        case 'GET':
+                            body = await fetchEvents(event, context);
+                            break;
+                        case 'POST':
+                            body = await createEvent(event, context);
+                            break;
+                        default:
+                            throw new Error('Page not found');
+                    }
+                }
+                break;
+            case '/accounts/{accountId}/events/{eventId}':
+                token = tokenValid(event, context);
+                if (token.valid) {
+                    switch(event.httpMethod) {
+                        case 'GET':
+                            body = await fetchEvent(event, context);
+                            break;
+                        case 'PUT':
+                            body = await updateEvent(event, context);
+                            break;
+                        default:
+                            throw new Error('Page not found');
+                    }
                 }
                 break;
             case '/login':
