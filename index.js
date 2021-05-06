@@ -1,4 +1,4 @@
-const { createUser, fetchUser, loginUser, updatePassword, deleteUser } = require('./lib/users');
+const { createUser, fetchUser, loginUser, updatePassword, deleteUser, getAvatarUrl } = require('./lib/users');
 const { tokenValid } = require('./lib/tokens');
 
 // authorized single user endpoints to get, update, and delete
@@ -53,6 +53,14 @@ exports.handler = async (event, context) => {
             case '/users/{userId}':
                 body = await userEndpoint(event, context);
                 break;
+            case '/users/{userId}/avatar':
+                const token = tokenValid(event, context);
+                if (token.valid) {
+                    body = getAvatarUrl(event, context);
+                } else {
+                    throw new Error('Not Authorized');
+                }
+                break;
             case '/login':
                 // /login path; POST
                 switch (event.httpMethod) {
@@ -68,7 +76,7 @@ exports.handler = async (event, context) => {
         }
     } catch (err) {
         statusCode = '400';
-        body = err.message;
+        body = {error: err.message};
     } finally {
         body = JSON.stringify(body);
     }
