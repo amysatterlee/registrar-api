@@ -11,6 +11,8 @@ exports.handler = async (event, context) => {
     let statusCode = '200';
     const headers = {
         'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT"
     };
 
     try {
