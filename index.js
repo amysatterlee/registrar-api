@@ -1,10 +1,12 @@
-const { createAccount, fetchAccount, loginAccount } = require('./lib/accounts');
-const { fetchEvent, createEvent, fetchEvents, updateEvent } = require('./lib/events');
-const { tokenValid } = require('./lib/tokens');
+const { accountsRoute } = require('./lib/routes/accountsRoute');
+const { accountRoute } = require('./lib/routes/accountRoute');
+const { eventsRoute } = require('./lib/routes/eventsRoute');
+const { eventRoute} = require('./lib/routes/eventRoute');
+const { loginRoute } = require('./lib/routes/loginRoute');
 
 exports.handler = async (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
-    let token;
+
     let body;
     let statusCode = '200';
     const headers = {
@@ -12,76 +14,22 @@ exports.handler = async (event, context) => {
     };
 
     try {
-        switch (event.resource) {
+        switch(event.resource) {
             case '/accounts':
-                // users path; POST
-                switch (event.httpMethod) {
-                    case 'POST':
-                        body = await createAccount(event, context);
-                        break;
-                    default:
-                        throw new Error('Page not found');
-                }
+                body = await accountsRoute(event, context);
                 break;
             case '/accounts/{accountId}':
-                token = tokenValid(event, context);
-                if (token.valid) {
-                    switch(event.httpMethod) {
-                        case 'GET':
-                            body = await fetchAccount(event, context);
-                            break;
-                        // case 'PUT':
-                        //     body = await updateAccount(event, context);
-                        //     break;
-                        default:
-                            throw new Error('Page not found');
-                    }
-                } else {
-                    throw new Error('Not Authorized');
-                }
+                body = await accountRoute(event, context);
                 break;
             case '/accounts/{accountId}/events':
-                token = tokenValid(event, context);
-                if (token.valid) {
-                    switch(event.httpMethod) {
-                        case 'GET':
-                            body = await fetchEvents(event, context);
-                            break;
-                        case 'POST':
-                            body = await createEvent(event, context);
-                            break;
-                        default:
-                            throw new Error('Page not found');
-                    }
-                }
+                body = await eventsRoute(event, context);
                 break;
             case '/accounts/{accountId}/events/{eventId}':
-                token = tokenValid(event, context);
-                if (token.valid) {
-                    switch(event.httpMethod) {
-                        case 'GET':
-                            body = await fetchEvent(event, context);
-                            break;
-                        case 'PUT':
-                            body = await updateEvent(event, context);
-                            break;
-                        default:
-                            throw new Error('Page not found');
-                    }
-                }
+                body = await eventRoute(event, context);
                 break;
             case '/login':
-                // login path; POST
-                switch (event.httpMethod) {
-                    case 'POST':
-                        body = await loginAccount(event, context);
-                        break;
-                    default:
-                        throw new Error('Page not found');
-                }
+                body = await loginRoute(event, context);
                 break;
-            default:
-                throw new Error('Page not found');
         }
     } catch (err) {
         statusCode = '400';
