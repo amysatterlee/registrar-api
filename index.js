@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
     const headers = {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT"
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE"
     };
 
     try {
