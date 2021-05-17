@@ -38,8 +38,12 @@ exports.handler = async (event, context) => {
                 break;
         }
     } catch (err) {
-        statusCode = '400';
-        body = {error: err.message};
+        if (err.message.include('Not Found')) {
+            statusCode = '404';
+        } else {
+            statusCode = '400';
+        }
+        body = { error: err.message };
     } finally {
         body = JSON.stringify(body);
     }
