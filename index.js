@@ -38,7 +38,7 @@ exports.handler = async (event, context) => {
                 break;
         }
     } catch (err) {
-        if (err.message.include('Not Found')) {
+        if (err.message.includes('Not Found')) {
             statusCode = '404';
         } else {
             statusCode = '400';
