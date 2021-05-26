@@ -1,7 +1,7 @@
 const { accountsRoute } = require('./lib/routes/accountsRoute');
 const { accountRoute } = require('./lib/routes/accountRoute');
-const { eventsRoute } = require('./lib/routes/eventsRoute');
-const { eventRoute} = require('./lib/routes/eventRoute');
+const { offeringsRoute } = require('./lib/routes/offeringsRoute');
+const { offeringRoute } = require('./lib/routes/offeringRoute');
 const { loginRoute } = require('./lib/routes/loginRoute');
 const { publicRoute } = require('./lib/routes/publicRoute');
 
@@ -24,13 +24,13 @@ exports.handler = async (event, context) => {
             case '/accounts/{accountId}':
                 body = await accountRoute(event, context);
                 break;
-            case '/accounts/{accountId}/events':
-                body = await eventsRoute(event, context);
+            case '/accounts/{accountId}/offerings':
+                body = await offeringsRoute(event, context);
                 break;
-            case '/accounts/{accountId}/events/{eventId}':
-                body = await eventRoute(event, context);
+            case '/accounts/{accountId}/offerings/{offeringId}':
+                body = await offeringRoute(event, context);
                 break;
-            case '/events/{eventId}':
+            case '/offerings/{offeringId}':
                 body = await publicRoute(event, context);
                 break;
             case '/login':
