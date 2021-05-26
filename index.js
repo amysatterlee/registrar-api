@@ -2,6 +2,7 @@ const { accountsRoute } = require('./lib/routes/accountsRoute');
 const { accountRoute } = require('./lib/routes/accountRoute');
 const { offeringsRoute } = require('./lib/routes/offeringsRoute');
 const { offeringRoute } = require('./lib/routes/offeringRoute');
+const { pricingRoute } = require('./lib/routes/pricingRoute');
 const { loginRoute } = require('./lib/routes/loginRoute');
 const { publicRoute } = require('./lib/routes/publicRoute');
 
@@ -29,6 +30,12 @@ exports.handler = async (event, context) => {
                 break;
             case '/accounts/{accountId}/offerings/{offeringId}':
                 body = await offeringRoute(event, context);
+                break;
+            case '/accounts/{accountId}/pricing':
+                body = await pricingRoute(event, context);
+                break;
+            case '/accounts/{accountId}/pricing/{priceId}':
+                body = await pricingRoute(event, context);
                 break;
             case '/offerings/{offeringId}':
                 body = await publicRoute(event, context);
