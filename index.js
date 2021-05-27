@@ -4,7 +4,7 @@ const { offeringsRoute } = require('./lib/routes/offeringsRoute');
 const { offeringRoute } = require('./lib/routes/offeringRoute');
 const { pricingRoute } = require('./lib/routes/pricingRoute');
 const { loginRoute } = require('./lib/routes/loginRoute');
-const { publicAccountRoute } = require('./lib/routes/publicAccountRoute');
+const { publicRoute } = require('./lib/routes/publicRoute');
 
 exports.handler = async (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
@@ -43,7 +43,7 @@ exports.handler = async (event, context) => {
             case '/login':
                 body = await loginRoute(event, context);
                 break;
-            case '/public/accounts/{accountId}':
+            case '/public/{accountId}':
                 body = await publicRoute(event, context);
                 break;
         }
