@@ -46,6 +46,9 @@ exports.handler = async (event, context) => {
             case '/public/{accountId}':
                 body = await publicRoute(event, context);
                 break;
+            case '/public/{accountId}/offerings':
+                body = await publicRoute(event, context);
+                break;
         }
     } catch (err) {
         if (err.message.includes('Not Found')) {
