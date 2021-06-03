@@ -74,3 +74,24 @@ Example successful result:
   "id": "43dd90f5-7b6d-47ad-b2d3-20beb925bfca"
 }
 ```
+---
+## Update Offering
+To update an offering:
+```
+PUT /accounts/{:accountId}/offerings/{:offeringId}
+```
+Example payload:
+```
+{
+  "id": "dc0c8330-3ae0-4aad-9a19-1e681e1c9cfc",
+  "category": "dance",
+  "offeringType": "drop-in",
+  "offeringLocation": "studio",
+  "description": "This drop in class is meant for adults interested in learning popular Country Line routines...",
+  "title": "Country Line Dance - All Levels",
+  "prices": [],
+  "ageGroup": "all",
+  "instructor": ""
+}
+```
+---
