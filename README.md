@@ -8,10 +8,10 @@ For this application, I developed using Lambda in a sandbox environment and did 
   * DynamoDB - create a table in DynamoDB with a hash key named `PK` and a sort key named `SK`
   * IAM Role - create a lambda policy that allows for reading and writing to this DynamoDB table
 
-## Environment Variales Required
+## Environment Variables Required
 Your lambda should have the following environment variables for this application to work:
   * TABLE_NAME = this is the DynamoDB table in the same account to which the Lambda must have read/write permissions.
-
+  * JWT_SECRET = secret hash for generating the JWT token for logged in users
 
 ## Create Account
 
