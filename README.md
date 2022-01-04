@@ -1,5 +1,18 @@
 # Registrar API
 
+This was the start of an Educational/Registration SAAS that I was developing. It is a work in progress that will probably not be finished, other interests have taken priority. This application, when finished, would allow logged in users to set up offerings/classes, and provide a public application for non-logged in users to register for the offerings/classes. This is a Node API meant to run in AWS lambda. The deploy.sh script will zip up the files for the app and upload the package to a lambda in your AWS account titled registrar-api. An AWS DynamoDB table is required for this API.
+
+## AWS Services Required
+For this application, I developed using Lambda in a sandbox environment and did not build it locally, so that would be a future enhancment... To run this in AWS, you will need to create the following objects (another future enhancement could add terraform to the project so these objects can be created automatically and consistently)
+  * Lambda - the deploy.sh script will deploy to a lambda named registrar-api (change this if you named your lambda something else)
+  * DynamoDB - create a table in DynamoDB with a hash key named `PK` and a sort key named `SK`
+  * IAM Role - create a lambda policy that allows for reading and writing to this DynamoDB table
+
+## Environment Variales Required
+Your lambda should have the following environment variables for this application to work:
+  * TABLE_NAME = this is the DynamoDB table in the same account to which the Lambda must have read/write permissions.
+
+
 ## Create Account
 
 To create an account in the Registrar:
